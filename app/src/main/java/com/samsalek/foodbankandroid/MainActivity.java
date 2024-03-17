@@ -2,75 +2,62 @@ package com.samsalek.foodbankandroid;
 
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.View;
+import com.samsalek.foodbankandroid.model.Dish;
+import com.samsalek.foodbankandroid.retrofit.DishApi;
+import com.samsalek.foodbankandroid.retrofit.RetrofitService;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+import android.widget.Toast;
 
-import com.samsalek.foodbankandroid.databinding.ActivityMainBinding;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import android.view.Menu;
-import android.view.MenuItem;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private AppBarConfiguration appBarConfiguration;
-    private ActivityMainBinding binding;
+    private final Logger LOGGER = Logger.getLogger(MainActivity.class.getName());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        initComponents();
+    }
 
-        setSupportActionBar(binding.toolbar);
+    private void initComponents() {
+        TextInputEditText nameInputEditText = findViewById(R.id.textFieldName);
+        MaterialButton addDishButton = findViewById(R.id.addDishButton);
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        RetrofitService retrofitService =  new RetrofitService();
+        DishApi dishApi = retrofitService.getRetrofit().create(DishApi.class);
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
+        addDishButton.setOnClickListener(view -> {
+            String dishName = String.valueOf(nameInputEditText.getText());
+
+            Dish dish = new Dish(dishName);
+
+            dishApi.addDish(dish)
+                    .enqueue(new Callback<Dish>() {
+                        @Override
+                        public void onResponse(Call<Dish> call, Response<Dish> response) {
+                            Toast.makeText(MainActivity.this, "Successfully added dish!", Toast.LENGTH_SHORT).show();
+                            LOGGER.info("HERE: " + response.body());
+                        }
+
+                        @Override
+                        public void onFailure(Call<Dish> call, Throwable t) {
+                            Toast.makeText(MainActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
+                           LOGGER.log(Level.SEVERE, "Error when adding dish", t);
+                        }
+                    });
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
     }
 }
