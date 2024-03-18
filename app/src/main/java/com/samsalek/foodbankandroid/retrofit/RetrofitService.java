@@ -1,9 +1,7 @@
 package com.samsalek.foodbankandroid.retrofit;
 
-import com.google.gson.Gson;
-
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class RetrofitService {
 
@@ -19,9 +17,8 @@ public class RetrofitService {
     private void init() {
         retrofit = new Retrofit.Builder()
                         .baseUrl("http://" + ip + ":" + port)
-                        .addConverterFactory(GsonConverterFactory.create(new Gson()))
+                        .addConverterFactory(JacksonConverterFactory.create())
                         .build();
-
     }
 
     public Retrofit getRetrofit() {
