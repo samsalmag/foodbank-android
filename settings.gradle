@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Food Bank Android"
+rootProject.name = "Foodbank Android"
 include ':app'
