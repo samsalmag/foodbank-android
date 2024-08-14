@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottomNav_dishes"
+        android:title="@string/tab_dishes"
+        android:icon="@drawable/food_foreground"/>
+
+</menu>

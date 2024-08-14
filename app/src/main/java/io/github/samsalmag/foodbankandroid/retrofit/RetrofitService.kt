@@ -7,7 +7,8 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 
 class RetrofitService {
 
-    private val objectMapper: ObjectMapper = ObjectMapper().registerModule(JavaTimeModule())
+    private val objectMapper: ObjectMapper = ObjectMapper()
+                                                .registerModule(JavaTimeModule())   // Add module to serialize/deserialize java.time
 
     private val ip = "192.168.1.20"
     private val port = "8080"

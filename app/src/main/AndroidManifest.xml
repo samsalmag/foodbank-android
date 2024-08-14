@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission
-        android:name="android.permission.INTERNET">
-    </uses-permission>
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -13,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodbankAndroid"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name="io.github.samsalmag.foodbankandroid.AddDishFragment"
+            android:exported="false" />
         <activity
             android:name="io.github.samsalmag.foodbankandroid.MainActivity"
             android:exported="true">
