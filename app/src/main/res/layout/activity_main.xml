@@ -9,11 +9,50 @@
 
     tools:context="io.github.samsalmag.foodbankandroid.MainActivity">
 
+    <Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/action_bar"
+        android:contentInsetStart="0dp">
+
+        <!-- android:layout_marginStart="0dp" removes the margin on the left side -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="0dp"
+            android:background="@color/purple_500">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/app_name"
+                android:gravity="center"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/api_connection_text"
+                android:layout_marginEnd="10dp"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:text="Connecting..."
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                />
+        </RelativeLayout>
+    </Toolbar>
+
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/menu_bottomNavigation"/>
+        android:layout_above="@+id/menu_bottomNavigation"
+        android:layout_below="@+id/action_bar"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/menu_bottomNavigation"
@@ -21,5 +60,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/purple_200" />
+        android:background="@color/purple_500"
+        app:itemTextColor="@color/white"
+        app:itemIconTint="@color/white"
+        app:itemIconSize="35dp"/>
 </RelativeLayout>

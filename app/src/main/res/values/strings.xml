@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Foodbank Android</string>
+    <string name="app_name">FoodBank Android</string>
     <string name="dish_name">Dish name</string>
     <string name="add_dish">Add dish</string>
     <string name="add_new_dish">Add new dish</string>
