@@ -13,10 +13,14 @@ class RetrofitService {
     private val ip = "192.168.1.20"
     private val port = "8080"
 
-    fun get(): Retrofit {
+    private fun retrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl("http://$ip:$port")
             .addConverterFactory(JacksonConverterFactory.create(objectMapper))
             .build()
+    }
+
+    val foodbankApi: FoodbankApi by lazy {
+        retrofit().create(FoodbankApi::class.java)
     }
 }

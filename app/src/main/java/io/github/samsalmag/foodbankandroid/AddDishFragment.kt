@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.samsalmag.foodbankandroid.databinding.FragmentAddDishBinding
 import io.github.samsalmag.foodbankandroid.model.Dish
-import io.github.samsalmag.foodbankandroid.retrofit.DishApi
+import io.github.samsalmag.foodbankandroid.retrofit.FoodbankApi
 import io.github.samsalmag.foodbankandroid.retrofit.RetrofitService
 import io.github.samsalmag.foodbankandroid.retrofit.RetrofitUtil
 import retrofit2.Call
@@ -24,7 +24,7 @@ class AddDishFragment : Fragment() {
     private var _binding: FragmentAddDishBinding? = null
     private val binding get() = _binding!!  // This property is only valid between onCreateView() and onDestroyView()
 
-    private lateinit var dishApi: DishApi
+    private lateinit var foodbankApi: FoodbankApi
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentAddDishBinding.inflate(layoutInflater, container, false)
@@ -37,7 +37,7 @@ class AddDishFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dishApi = RetrofitService().get().create(DishApi::class.java)
+        foodbankApi = RetrofitService().foodbankApi
     }
 
     override fun onDestroyView() {
@@ -65,7 +65,7 @@ class AddDishFragment : Fragment() {
     }
 
     private fun postDish(dish: Dish) {
-        dishApi.addDish(dish).enqueue(object : Callback<Dish> {
+        foodbankApi.addDish(dish).enqueue(object : Callback<Dish> {
 
             override fun onResponse(call: Call<Dish>, response: Response<Dish>) {
                 LOGGER.info(RetrofitUtil.requestToString(response))     // Log the request we send to the API
