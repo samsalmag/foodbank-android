@@ -13,10 +13,45 @@
         android:layout_marginBottom="20dp"
         android:text="@string/add_new_dish"/>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recyclerView_dishesList"
-        android:layout_below="@id/button_newDishView"/>
+        android:layout_below="@id/button_newDishView">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recyclerView_dishesList" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/progressIndicator_dishesList"
+            android:indeterminate="true"
+            android:visibility="gone"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/layout_loadDishesError"
+            android:orientation="vertical"
+            android:layout_gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/load_dishes_error"
+                android:textSize="18sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/button_retryLoadDishes"
+                android:text="@string/retry"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
+    </FrameLayout>
 
 </RelativeLayout>

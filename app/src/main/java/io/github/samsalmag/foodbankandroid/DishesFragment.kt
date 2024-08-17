@@ -8,16 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.samsalmag.foodbankandroid.R
 import com.samsalmag.foodbankandroid.databinding.FragmentDishesBinding
 import io.github.samsalmag.foodbankandroid.model.Dish
 import io.github.samsalmag.foodbankandroid.retrofit.RetrofitService
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -31,11 +30,18 @@ class DishesFragment : Fragment() {
     private lateinit var dishRecyclerView: RecyclerView
     private lateinit var dishAdapter: DishAdapter
 
+    private lateinit var loadingIndicator: CircularProgressIndicator
+    private lateinit var buttonRetryLoadDishes: MaterialButton
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentDishesBinding.inflate(layoutInflater, container, false)
 
         initButtonAddNewDish()
         initRecyclerView()
+        initLoadingIndicator()
+        initLayoutLoadDishesError()
+
+        loadDishes()
 
         return binding.root
     }
@@ -53,11 +59,31 @@ class DishesFragment : Fragment() {
 
         dishAdapter = DishAdapter(mutableListOf())   // Initialize with an empty list
         dishRecyclerView.adapter = dishAdapter
+    }
 
+    private fun initLoadingIndicator() {
+        loadingIndicator = binding.progressIndicatorDishesList
+    }
+
+    private fun initLayoutLoadDishesError() {
+        buttonRetryLoadDishes = binding.buttonRetryLoadDishes
+        buttonRetryLoadDishes.setOnClickListener {
+            loadDishes()
+        }
+    }
+
+    private fun loadDishes() {
+        showLoadingIndicator()
         lifecycleScope.launch {
-            // Fetch dishes from API and update the adapter
-            val dishes = fetchDishes()
-            dishAdapter.updateDishes(dishes)
+            try {
+                // Fetch dishes from API and update the adapter
+                val dishes = fetchDishes()
+                dishAdapter.updateDishes(dishes)
+                loadingIndicator.visibility = View.GONE
+            }
+            catch (e: Exception) {
+                showLayoutLoadDishesError()
+            }
         }
     }
 
@@ -71,14 +97,23 @@ class DishesFragment : Fragment() {
                     response.body() ?: emptyList()
                 }
                 else {
-                    LOGGER.severe("Failed to fetch dishes. Error code: ${response.code()}, Message: ${response.message()}")
-                    emptyList()
+                    throw Exception("Failed to fetch dishes. Error code: ${response.code()}, Message: ${response.message()}")
                 }
             }
             catch (e: Exception) {
                 LOGGER.log(Level.SEVERE,"Failed to fetch dishes", e)
-                emptyList()
+                throw e
             }
         }
+    }
+
+    private fun showLoadingIndicator() {
+        loadingIndicator.visibility = View.VISIBLE
+        binding.layoutLoadDishesError.visibility = View.GONE
+    }
+
+    private fun showLayoutLoadDishesError() {
+        loadingIndicator.visibility = View.GONE
+        binding.layoutLoadDishesError.visibility = View.VISIBLE
     }
 }

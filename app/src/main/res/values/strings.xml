@@ -4,4 +4,6 @@
     <string name="add_dish">Add dish</string>
     <string name="add_new_dish">Add new dish</string>
     <string name="tab_dishes">Dishes</string>
+    <string name="retry">Retry</string>
+    <string name="load_dishes_error">Could not load dishes</string>
 </resources>
