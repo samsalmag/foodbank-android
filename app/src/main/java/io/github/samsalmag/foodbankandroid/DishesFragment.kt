@@ -33,7 +33,7 @@ class DishesFragment : Fragment() {
     private lateinit var loadingIndicator: CircularProgressIndicator
     private lateinit var buttonRetryLoadDishes: MaterialButton
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentDishesBinding.inflate(layoutInflater, container, false)
 
         initButtonAddNewDish()
