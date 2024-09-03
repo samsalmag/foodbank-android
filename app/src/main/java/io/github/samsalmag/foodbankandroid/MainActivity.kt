@@ -7,12 +7,6 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.samsalmag.foodbankandroid.R
 import com.samsalmag.foodbankandroid.databinding.ActivityMainBinding
-import io.github.samsalmag.foodbankandroid.retrofit.RetrofitService
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Response
 import java.util.logging.Logger
 
 class MainActivity : AppCompatActivity() {
@@ -37,19 +31,28 @@ class MainActivity : AppCompatActivity() {
     private fun initBottomNavMenu(savedInstanceState: Bundle?) {
         val bottomNavigationMenu: BottomNavigationView = findViewById(R.id.menu_bottomNavigation)
         bottomNavigationMenu.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.bottomNav_dishes -> {
-                    replaceFragment(DishesFragment())
-                    true
-                }
-
-                else -> false
+            val selectedFragment = when (item.itemId) {
+                R.id.bottomNav_dishes -> DishesFragment()
+                R.id.bottomNav_groceryList -> GroceryListFragment()
+                else -> null
             }
+
+            // Only switch fragments if the selected fragment is not null
+            selectedFragment?.let {
+                val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+                if (currentFragment != null && currentFragment::class != selectedFragment::class) {
+                    // The selected fragment is not the current fragment, so replace it
+                    replaceFragment(it)
+                }
+            }
+
+            true
         }
 
         // Set the initial fragment
+        val defaultSelectedFragment = DishesFragment()
         if (savedInstanceState == null) {
-            replaceFragment(DishesFragment())
+            replaceFragment(defaultSelectedFragment)
         }
     }
 
