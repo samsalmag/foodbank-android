@@ -6,4 +6,9 @@
     <string name="tab_dishes">Dishes</string>
     <string name="retry">Retry</string>
     <string name="load_dishes_error">Could not load dishes</string>
+    <string name="ingredient_name">Ingredient name</string>
+    <string name="add_ingredient">Add ingredient</string>
+    <string name="tab_dishSchedule">Dish schedule</string>
+    <string name="tab_groceryList">Grocery list</string>
+    <string name="tab_randomDish">Random dish</string>
 </resources>
