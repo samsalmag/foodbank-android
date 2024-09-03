@@ -14,8 +14,8 @@ data class Dish (
     var id: String? = null,
     var name: String? = null,
     var category: String = "Unknown",
-    val ingredients: List<String> = ArrayList(),
-    val instructions: List<String> = ArrayList(),
+    val ingredients: MutableList<String> = mutableListOf(),
+    val instructions: MutableList<String> = mutableListOf(),
 
     @JsonSerialize(using = LocalDateTimeSerializer::class)
     @JsonDeserialize(using = LocalDateTimeDeserializer::class)
