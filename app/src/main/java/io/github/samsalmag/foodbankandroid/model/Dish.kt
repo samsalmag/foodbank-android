@@ -6,18 +6,22 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.github.samsalmag.foodbankandroid.jackson.LocalDateTimeDeserializer
 import io.github.samsalmag.foodbankandroid.jackson.LocalDateTimeSerializer
 
-
 import java.time.LocalDateTime
-import java.util.ArrayList
 
 data class Dish (
-    var id: String? = null,
-    var name: String? = null,
-    var category: String = "Unknown",
-    val ingredients: MutableList<String> = mutableListOf(),
-    val instructions: MutableList<String> = mutableListOf(),
+    val id: String,
+    var name: String,
+    var categories: MutableList<String>,
+    val ingredients: MutableList<Ingredient>,
+    val instructions: String,
 
     @JsonSerialize(using = LocalDateTimeSerializer::class)
     @JsonDeserialize(using = LocalDateTimeDeserializer::class)
-    val creationTime: LocalDateTime = LocalDateTime.now()
-)
+    val creationTime: LocalDateTime,
+
+    @JsonSerialize(using = LocalDateTimeSerializer::class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer::class)
+    var latestModTime: LocalDateTime
+) {
+    constructor(): this("", "", mutableListOf(), mutableListOf(), "", LocalDateTime.now(), LocalDateTime.now())
+}
