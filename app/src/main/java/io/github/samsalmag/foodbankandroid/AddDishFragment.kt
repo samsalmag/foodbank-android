@@ -5,7 +5,9 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.LinearLayout
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
@@ -13,6 +15,8 @@ import com.google.android.material.textfield.TextInputEditText
 import com.samsalmag.foodbankandroid.R
 import com.samsalmag.foodbankandroid.databinding.FragmentAddDishBinding
 import io.github.samsalmag.foodbankandroid.model.Dish
+import io.github.samsalmag.foodbankandroid.model.Ingredient
+import io.github.samsalmag.foodbankandroid.retrofit.DishRequestDTO
 import io.github.samsalmag.foodbankandroid.retrofit.FoodbankApi
 import io.github.samsalmag.foodbankandroid.retrofit.RetrofitService
 import io.github.samsalmag.foodbankandroid.retrofit.RetrofitUtil
@@ -31,14 +35,18 @@ class AddDishFragment : Fragment() {
 
     private lateinit var foodbankApi: FoodbankApi
 
-    private var ingredientCount = 1
+    private var ingredientCount = 0
     private val maxIngredientCount = 20
+
+    private var categoryCount = 0
+    private val maxCategoryCount = 5
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentAddDishBinding.inflate(layoutInflater, container, false)
 
         initButtonBack()
         initButtonAddDish()
+        initButtonAddCategory()
         initButtonAddIngredient()
 
         return binding.root
@@ -66,13 +74,19 @@ class AddDishFragment : Fragment() {
         val addDishButton = binding.buttonAddDish
 
         addDishButton.setOnClickListener {
-            val dish = Dish()
+
             val dishName = nameInputEditText.text.toString()
-            dish.name = dishName
 
-            dish.ingredients.addAll(getIngredientList())
+            val dishRequestDTO = DishRequestDTO(dishName, getCategoryList(), getIngredientList(), "TEMP")
 
-            postDish(dish)
+            postDish(dishRequestDTO)
+        }
+    }
+
+    private fun initButtonAddCategory() {
+        val addCategoryButton = binding.buttonAddCategory
+        addCategoryButton.setOnClickListener {
+            addCategory()
         }
     }
 
@@ -83,8 +97,8 @@ class AddDishFragment : Fragment() {
         }
     }
 
-    private fun postDish(dish: Dish) {
-        foodbankApi.addDish(dish).enqueue(object : Callback<Dish> {
+    private fun postDish(dishRequestDTO: DishRequestDTO) {
+        foodbankApi.addDish(dishRequestDTO).enqueue(object : Callback<Dish> {
 
             override fun onResponse(call: Call<Dish>, response: Response<Dish>) {
                 LOGGER.info(RetrofitUtil.requestToString(response))     // Log the request we send to the API
@@ -115,14 +129,16 @@ class AddDishFragment : Fragment() {
         if (ingredientCount < maxIngredientCount) {
             ingredientCount++
 
-            val newTextField = TextInputEditText(requireContext())
+            val inflater = LayoutInflater.from(context)
+            val ingredientItemView = inflater.inflate(R.layout.item_ingredient, binding.layoutIngredientContainer, false)
 
-            val layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-            layoutParams.setMargins(0, 0, 0, 20)
-            newTextField.hint = "Ingredient $ingredientCount"
-            newTextField.minHeight = 50.asDp()
+            ingredientItemView.findViewById<TextInputEditText>(R.id.textInput_ingredientName).hint = "Ingredient $ingredientCount"
+            val unitDropdown = ingredientItemView.findViewById<Spinner>(R.id.dropdown_ingredientUnit)
+            val options = arrayOf("kg", "g", "l", "ml", "pcs")
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, options)
+            unitDropdown.adapter = adapter
 
-            binding.layoutIngredientContainer.addView(newTextField, 0)
+            binding.layoutIngredientContainer.addView(ingredientItemView, 0)
 
             if (ingredientCount == maxIngredientCount) {
                 binding.buttonAddIngredient.isEnabled = false
@@ -130,12 +146,59 @@ class AddDishFragment : Fragment() {
         }
     }
 
-    private fun getIngredientList(): List<String> {
-        val ingredientList = mutableListOf<String>()
+    private fun addCategory() {
+        if (categoryCount < maxCategoryCount) {
+            categoryCount++
+
+            val newTextField = TextInputEditText(requireContext())
+
+            val layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            layoutParams.setMargins(0, 0, 0, 20)
+            newTextField.hint = "Category $categoryCount"
+            newTextField.maxWidth = 200.asDp()
+            newTextField.minHeight = 50.asDp()
+
+            binding.layoutCategoryContainer.addView(newTextField, 0)
+
+            if (categoryCount == maxCategoryCount) {
+                binding.buttonAddCategory.isEnabled = false
+            }
+        }
+    }
+
+    private fun getCategoryList(): List<String> {
+        val categoryList = mutableListOf<String>()
+
+        for (view in binding.layoutCategoryContainer.children) {
+            if (view is TextInputEditText) {
+                categoryList.add(view.text.toString())
+            }
+        }
+
+        return categoryList
+    }
+
+    private fun getIngredientList(): List<Ingredient> {
+        val ingredientList = mutableListOf<Ingredient>()
 
         for (view in binding.layoutIngredientContainer.children) {
-            if (view is TextInputEditText) {
-                ingredientList.add(view.text.toString())
+
+            var name = "ERROR"
+            var amount = -1
+            var unit = "ERROR"
+
+            if (view is LinearLayout) {
+
+                if (view.getChildAt(0) is TextInputEditText)
+                    amount = (view.getChildAt(0) as TextInputEditText).text.toString().toInt()
+
+                if (view.getChildAt(1) is Spinner)
+                    unit = (view.getChildAt(1) as Spinner).selectedItem.toString()
+
+                if (view.getChildAt(2) is TextInputEditText)
+                    name = (view.getChildAt(2) as TextInputEditText).text.toString()
+
+                ingredientList.add(Ingredient(name, amount, unit))
             }
         }
 
