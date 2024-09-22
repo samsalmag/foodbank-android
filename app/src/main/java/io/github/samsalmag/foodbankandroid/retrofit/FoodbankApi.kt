@@ -9,16 +9,16 @@ import retrofit2.http.POST
 interface FoodbankApi {
 
     companion object {
-        const val BASE_URL = "/api/v1"
+        const val BASE_URL = "/api/v1/dish"
     }
 
-    @GET("/")
+    @GET("$BASE_URL/")
     fun default(): Call<Void>
 
     // DISH
-    @GET("$BASE_URL/dish/all")
+    @GET("$BASE_URL/all")
     fun dishes(): Call<List<Dish>>
 
-    @POST("$BASE_URL/dish/add")
-    fun addDish(@Body dish: Dish): Call<Dish>
+    @POST("$BASE_URL/")
+    fun addDish(@Body dishRequestDTO: DishRequestDTO): Call<Dish>
 }
