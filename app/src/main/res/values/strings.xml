@@ -11,4 +11,6 @@
     <string name="tab_dishSchedule">Dish schedule</string>
     <string name="tab_groceryList">Grocery list</string>
     <string name="tab_randomDish">Random dish</string>
+    <string name="add_category">Add category</string>
+    <string name="amount">Amount</string>
 </resources>
