@@ -16,6 +16,7 @@ import com.samsalmag.foodbankandroid.R
 import com.samsalmag.foodbankandroid.databinding.FragmentAddDishBinding
 import io.github.samsalmag.foodbankandroid.model.Dish
 import io.github.samsalmag.foodbankandroid.model.Ingredient
+import io.github.samsalmag.foodbankandroid.model.IngredientUnit
 import io.github.samsalmag.foodbankandroid.retrofit.DishRequestDTO
 import io.github.samsalmag.foodbankandroid.retrofit.FoodbankApi
 import io.github.samsalmag.foodbankandroid.retrofit.RetrofitService
@@ -134,7 +135,7 @@ class AddDishFragment : Fragment() {
 
             ingredientItemView.findViewById<TextInputEditText>(R.id.textInput_ingredientName).hint = "Ingredient $ingredientCount"
             val unitDropdown = ingredientItemView.findViewById<Spinner>(R.id.dropdown_ingredientUnit)
-            val options = arrayOf("kg", "g", "l", "ml", "pcs")
+            val options = IngredientUnit.values().map { it.toString() }
             val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, options)
             unitDropdown.adapter = adapter
 
@@ -182,19 +183,20 @@ class AddDishFragment : Fragment() {
         val ingredientList = mutableListOf<Ingredient>()
 
         for (view in binding.layoutIngredientContainer.children) {
-
-            var name = "ERROR"
-            var amount = -1
-            var unit = "ERROR"
-
             if (view is LinearLayout) {
+                var name = "ERROR"
+                var amount = -1
+                var unit = "ERROR"
 
+                // AMOUNT
                 if (view.getChildAt(0) is TextInputEditText)
                     amount = (view.getChildAt(0) as TextInputEditText).text.toString().toInt()
 
+                // UNIT
                 if (view.getChildAt(1) is Spinner)
                     unit = (view.getChildAt(1) as Spinner).selectedItem.toString()
 
+                // NAME
                 if (view.getChildAt(2) is TextInputEditText)
                     name = (view.getChildAt(2) as TextInputEditText).text.toString()
 
