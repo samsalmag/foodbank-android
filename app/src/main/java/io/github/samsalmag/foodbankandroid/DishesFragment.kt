@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -83,13 +84,19 @@ class DishesFragment : Fragment() {
             try {
                 // Fetch dishes from API and update the adapter
                 val dishes = fetchDishes()
-                dishAdapter.updateDishes(dishes)
-                loadingIndicator.visibility = View.GONE
+
+                if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+                    dishAdapter.updateDishes(dishes)
+                    loadingIndicator.visibility = View.GONE
+                }
             }
             catch (e: Exception) {
-                showLayoutLoadDishesError()
+                if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED))
+                    showLayoutLoadDishesError()
             }
         }
+
+
     }
 
     private suspend fun fetchDishes(): List<Dish> {
