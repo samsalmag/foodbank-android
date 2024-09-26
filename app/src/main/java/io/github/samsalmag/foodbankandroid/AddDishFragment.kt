@@ -181,14 +181,13 @@ class AddDishFragment : Fragment() {
 
     private fun getIngredientList(): List<Ingredient> {
         val ingredientList = mutableListOf<Ingredient>()
-
         for (view in binding.layoutIngredientContainer.children) {
             if (view is LinearLayout) {
                 var name = "ERROR"
-                var amount = -1
+                var quantity = -1
                 var unit = "ERROR"
 
-                // AMOUNT
+                // QUANTITY
                 if (view.getChildAt(0) is TextInputEditText)
                     amount = (view.getChildAt(0) as TextInputEditText).text.toString().toInt()
 
@@ -197,13 +196,15 @@ class AddDishFragment : Fragment() {
                     unit = (view.getChildAt(1) as Spinner).selectedItem.toString()
 
                 // NAME
-                if (view.getChildAt(2) is TextInputEditText)
-                    name = (view.getChildAt(2) as TextInputEditText).text.toString()
+                if (view.getChildAt(2) is TextInputEditText) {
+                    val input = (view.getChildAt(2) as TextInputEditText).text.toString()
+                    name = if (!input.isNullOrEmpty()) input else ""
+                }
 
-                ingredientList.add(Ingredient(name, amount, unit))
+                // Only add ingredient if its name is not empty
+                if (name.isNotEmpty()) ingredientList.add(Ingredient(name, quantity, unit))
             }
         }
-
         return ingredientList
     }
 
