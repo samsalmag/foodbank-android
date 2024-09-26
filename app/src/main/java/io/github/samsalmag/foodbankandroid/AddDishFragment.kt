@@ -189,7 +189,7 @@ class AddDishFragment : Fragment() {
 
                 // QUANTITY
                 if (view.getChildAt(0) is TextInputEditText)
-                    amount = (view.getChildAt(0) as TextInputEditText).text.toString().toInt()
+                    quantity = (view.getChildAt(0) as TextInputEditText).text.toString().toIntOrNull() ?: 0
 
                 // UNIT
                 if (view.getChildAt(1) is Spinner)
