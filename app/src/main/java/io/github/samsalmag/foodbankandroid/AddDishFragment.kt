@@ -108,6 +108,7 @@ class AddDishFragment : Fragment() {
                 if (response.isSuccessful) {
                     // Toast.makeText(requireContext(), "Dish added successfully!", Toast.LENGTH_LONG).show()
                     showToast("Dish added successfully!")
+                    requireActivity().supportFragmentManager.popBackStack()     // View is closed after successful addition
                 }
                 else {
                     val errorMessage = response.errorBody()?.string() ?: "Unknown error"
