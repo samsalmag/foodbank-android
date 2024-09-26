@@ -15,6 +15,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.samsalmag.foodbankandroid.R
 import com.samsalmag.foodbankandroid.databinding.FragmentAddDishBinding
 import io.github.samsalmag.foodbankandroid.model.Dish
+import io.github.samsalmag.foodbankandroid.model.DishCategory
 import io.github.samsalmag.foodbankandroid.model.Ingredient
 import io.github.samsalmag.foodbankandroid.model.IngredientUnit
 import io.github.samsalmag.foodbankandroid.retrofit.DishRequestDTO
@@ -151,15 +152,12 @@ class AddDishFragment : Fragment() {
         if (categoryCount < maxCategoryCount) {
             categoryCount++
 
-            val newTextField = TextInputEditText(requireContext())
+            val newDropdown = Spinner(requireContext())
+            val options = DishCategory.values().map { it.toString() }.sorted()
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, options)
+            newDropdown.adapter = adapter
 
-            val layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-            layoutParams.setMargins(0, 0, 0, 20)
-            newTextField.hint = "Category $categoryCount"
-            newTextField.maxWidth = 200.asDp()
-            newTextField.minHeight = 50.asDp()
-
-            binding.layoutCategoryContainer.addView(newTextField, 0)
+            binding.layoutCategoryContainer.addView(newDropdown, 0)
 
             if (categoryCount == maxCategoryCount) {
                 binding.buttonAddCategory.isEnabled = false
