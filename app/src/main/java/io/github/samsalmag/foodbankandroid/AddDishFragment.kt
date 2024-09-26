@@ -168,13 +168,14 @@ class AddDishFragment : Fragment() {
 
     private fun getCategoryList(): List<String> {
         val categoryList = mutableListOf<String>()
-
         for (view in binding.layoutCategoryContainer.children) {
-            if (view is TextInputEditText) {
-                categoryList.add(view.text.toString())
+            if (view is Spinner) {
+                val category = view.selectedItem.toString()
+                // Only add the category if it's not already in the list
+                if (!categoryList.contains(category))
+                    categoryList.add(category)
             }
         }
-
         return categoryList
     }
 
