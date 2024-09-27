@@ -14,10 +14,23 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/dishName"
-        android:textSize="15sp"
+        android:id="@+id/textView_dishName"
+        android:textSize="22sp"
         android:textStyle="bold"
-        android:layout_centerVertical="true"/>
+        android:text="Dish name"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView_dishCategories"
+        android:textSize="17sp"
+        android:layout_below="@+id/textView_dishName"
+        android:layout_toStartOf="@+id/button_addToGroceryList"
+        android:layout_alignParentStart="true"
+        android:layout_marginEnd="10dp"
+        android:text="Category 1, Category 2, Category 3, Category 4, Category 5"
+        android:textColor="@color/black" />
 
     <com.google.android.material.button.MaterialButton
         android:layout_width="50dp"
