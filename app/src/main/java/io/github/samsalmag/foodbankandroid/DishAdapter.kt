@@ -15,7 +15,8 @@ import java.util.logging.Logger
 class DishAdapter(private val dishes: MutableList<Dish>) : RecyclerView.Adapter<DishAdapter.DishViewHolder>() {
 
     class DishViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textViewDishName: TextView = itemView.findViewById(R.id.dishName)
+        val textViewDishName: TextView = itemView.findViewById(R.id.textView_dishName)
+        val textViewDishCategories: TextView = itemView.findViewById(R.id.textView_dishCategories)
         val buttonAddToGroceryList: MaterialButton = itemView.findViewById(R.id.button_addToGroceryList)
     }
 
@@ -29,12 +30,14 @@ class DishAdapter(private val dishes: MutableList<Dish>) : RecyclerView.Adapter<
     override fun onBindViewHolder(holder: DishViewHolder, position: Int) {
         val dish = dishes[position]
         holder.textViewDishName.text = dish.name
+        holder.textViewDishCategories.text = dish.categories
+            .toString().replace("[", "").replace("]","")    // Remove list brackets
 
-        // Change background color for odd entries
+        // Alternate background color
         if (position % 2 == 0)
-            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.white))
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.recycler_view_even_item))
         else
-            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.light_gray))
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.recycler_view_odd_item))
 
         // Handle button click event
         holder.buttonAddToGroceryList.setOnClickListener {
