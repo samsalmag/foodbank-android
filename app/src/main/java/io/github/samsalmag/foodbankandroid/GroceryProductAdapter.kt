@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.samsalmag.foodbankandroid.R
 import io.github.samsalmag.foodbankandroid.model.GroceryProduct
@@ -17,6 +18,7 @@ class GroceryProductAdapter(private val groceryProducts: MutableList<GroceryProd
         val ingredientQuantity: TextView = itemView.findViewById(R.id.textView_ingredientQuantity)
         val ingredientUnit: TextView = itemView.findViewById(R.id.textView_ingredientUnit)
         val groceryComplete: CheckBox = itemView.findViewById(R.id.checkBox_ingredientComplete)
+        val completeOverlay: View = itemView.findViewById(R.id.view_completeOverlay)
     }
 
     private val LOGGER = Logger.getLogger(GroceryProductAdapter::class.java.name)
@@ -33,12 +35,22 @@ class GroceryProductAdapter(private val groceryProducts: MutableList<GroceryProd
         holder.ingredientUnit.text = groceryProduct.ingredient.unit
         holder.groceryComplete.isChecked = groceryProduct.isComplete
 
+        // Alternate background color
+        if (position % 2 == 0)
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.recycler_view_even_item))
+        else
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.recycler_view_odd_item))
+
+        // Init overlay visibility
+        holder.completeOverlay.visibility = if (holder.groceryComplete.isChecked) View.VISIBLE else View.GONE
+
+        // Handle checkbox click event
         holder.groceryComplete.setOnCheckedChangeListener { _, isChecked ->
             groceryProduct.isComplete = isChecked
-            LOGGER.info("Ingredient ${groceryProduct.ingredient.name} is complete: $isChecked")
+            groceryProducts[position] = groceryProduct  // Update the grocery product in the list
+            SharedPreferencesUtil.saveGroceryList(holder.itemView.context, groceryProducts)  // Save the updated list
 
-            groceryProducts[position] = groceryProduct
-            SharedPreferencesUtil.saveGroceryList(holder.itemView.context, groceryProducts)
+            holder.completeOverlay.visibility = if (isChecked) View.VISIBLE else View.GONE  // Update overlay visibility
         }
     }
 
