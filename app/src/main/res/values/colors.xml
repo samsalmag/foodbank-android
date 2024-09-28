@@ -10,4 +10,6 @@
     <color name="recycler_view_odd_item">#DFDFDF</color>">
     <color name="recycler_view_even_item">#C8C8C8</color>">
     <color name="item_grocery_product_complete">#804CAF50</color>
+    <color name="grocery_list_complete">#009E06</color>
+    <color name="grocery_list_incomplete">#B30000</color>
 </resources>
