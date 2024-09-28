@@ -1,4 +1,4 @@
-package io.github.samsalmag.foodbankandroid
+package io.github.samsalmag.foodbankandroid.fragment
 
 import android.os.Bundle
 import android.view.Gravity

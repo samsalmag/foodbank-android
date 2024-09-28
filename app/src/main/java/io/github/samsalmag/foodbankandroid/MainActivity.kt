@@ -7,6 +7,8 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.samsalmag.foodbankandroid.R
 import com.samsalmag.foodbankandroid.databinding.ActivityMainBinding
+import io.github.samsalmag.foodbankandroid.fragment.DishesFragment
+import io.github.samsalmag.foodbankandroid.fragment.GroceryListFragment
 import java.util.logging.Logger
 
 class MainActivity : AppCompatActivity() {

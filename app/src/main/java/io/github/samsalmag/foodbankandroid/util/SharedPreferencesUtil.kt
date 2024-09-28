@@ -1,4 +1,4 @@
-package io.github.samsalmag.foodbankandroid
+package io.github.samsalmag.foodbankandroid.util
 
 import android.content.Context
 import com.google.gson.Gson

@@ -1,4 +1,4 @@
-package io.github.samsalmag.foodbankandroid
+package io.github.samsalmag.foodbankandroid.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.samsalmag.foodbankandroid.R
+import io.github.samsalmag.foodbankandroid.util.SharedPreferencesUtil
 import io.github.samsalmag.foodbankandroid.model.Dish
 import io.github.samsalmag.foodbankandroid.model.GroceryProduct
 import java.util.logging.Logger
