@@ -147,8 +147,11 @@ class DishesFragment : Fragment() {
             ContentState.LOADING -> binding.textViewNumberOfDishes.text = "Loading dishes... \uD83E\uDD17"
             ContentState.UNKNOWN -> binding.textViewNumberOfDishes.text = "Dish count unknown \uD83E\uDD14"
             ContentState.FOUND -> {
-                if (numberOfDishes == 0) binding.textViewNumberOfDishes.text = "No dishes found \uD83D\uDE14"
-                else binding.textViewNumberOfDishes.text = "$numberOfDishes dishes! \uD83D\uDE2F"
+                when (numberOfDishes) {
+                    0 -> binding.textViewNumberOfDishes.text = "No dishes found \uD83D\uDE14"
+                    1 -> binding.textViewNumberOfDishes.text = "1 dish! \uD83D\uDE2F"
+                    else -> binding.textViewNumberOfDishes.text = "$numberOfDishes dishes! \uD83D\uDE0A"
+                }
             }
         }
     }
