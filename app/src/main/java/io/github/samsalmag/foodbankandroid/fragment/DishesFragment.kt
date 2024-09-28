@@ -1,4 +1,4 @@
-package io.github.samsalmag.foodbankandroid
+package io.github.samsalmag.foodbankandroid.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +13,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.samsalmag.foodbankandroid.R
 import com.samsalmag.foodbankandroid.databinding.FragmentDishesBinding
+import io.github.samsalmag.foodbankandroid.adapter.DishAdapter
 import io.github.samsalmag.foodbankandroid.model.Dish
 import io.github.samsalmag.foodbankandroid.retrofit.RetrofitService
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +24,13 @@ import java.util.logging.Level
 import java.util.logging.Logger
 
 class DishesFragment : Fragment() {
+
+    enum class ContentState {
+        LOADING,
+        UNKNOWN,
+        FOUND
+    }
+
     private val LOGGER = Logger.getLogger(DishesFragment::class.java.name)
 
     private var _binding: FragmentDishesBinding? = null
@@ -37,6 +45,7 @@ class DishesFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentDishesBinding.inflate(layoutInflater, container, false)
 
+        setTextViewNumberOfDishes(ContentState.LOADING)
         initButtonAddNewDish()
         initRecyclerView()
         initLoadingIndicator()
@@ -80,6 +89,7 @@ class DishesFragment : Fragment() {
 
     private fun loadDishes() {
         showLoadingIndicator()
+        setTextViewNumberOfDishes(ContentState.LOADING)
         lifecycleScope.launch {
             try {
                 // Fetch dishes from API and update the adapter
@@ -88,11 +98,14 @@ class DishesFragment : Fragment() {
                 if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
                     dishAdapter.updateDishes(dishes)
                     loadingIndicator.visibility = View.GONE
+                    setTextViewNumberOfDishes(ContentState.FOUND, dishes.size)
                 }
             }
             catch (e: Exception) {
-                if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED))
+                if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
                     showLayoutLoadDishesError()
+                    setTextViewNumberOfDishes(ContentState.UNKNOWN)
+                }
             }
         }
 
@@ -127,5 +140,16 @@ class DishesFragment : Fragment() {
     private fun showLayoutLoadDishesError() {
         loadingIndicator.visibility = View.GONE
         binding.layoutLoadDishesError.visibility = View.VISIBLE
+    }
+
+    private fun setTextViewNumberOfDishes(state: ContentState, numberOfDishes: Int = 0) {
+        when (state) {
+            ContentState.LOADING -> binding.textViewNumberOfDishes.text = "Loading dishes... \uD83E\uDD17"
+            ContentState.UNKNOWN -> binding.textViewNumberOfDishes.text = "Dish count unknown \uD83E\uDD14"
+            ContentState.FOUND -> {
+                if (numberOfDishes == 0) binding.textViewNumberOfDishes.text = "No dishes found \uD83D\uDE14"
+                else binding.textViewNumberOfDishes.text = "$numberOfDishes dishes! \uD83D\uDE2F"
+            }
+        }
     }
 }
