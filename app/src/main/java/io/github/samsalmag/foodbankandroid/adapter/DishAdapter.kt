@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
@@ -71,7 +72,7 @@ class DishAdapter(private val dishes: MutableList<Dish>) : RecyclerView.Adapter<
             for (product in groceryProducts) {
                 if (product.ingredient.canStack(ingredient)) {
                     product.ingredient.quantity += ingredient.quantity  // Stack the ingredients
-                    product.isComplete = false  // Reset the complete flag, since quantity might have changed
+                    product.isComplete = false  // Reset the 'complete' flag, since quantity might have changed
                     ingredientStacked = true
                     break
                 }
@@ -84,5 +85,6 @@ class DishAdapter(private val dishes: MutableList<Dish>) : RecyclerView.Adapter<
             }
         }
         SharedPreferencesUtil.saveGroceryList(holder.itemView.context, groceryProducts)
+        Toast.makeText(holder.itemView.context, "Ingredients added to grocery list!", Toast.LENGTH_LONG).show()
     }
 }
