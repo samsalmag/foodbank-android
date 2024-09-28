@@ -1,4 +1,4 @@
-package io.github.samsalmag.foodbankandroid
+package io.github.samsalmag.foodbankandroid.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +8,14 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.samsalmag.foodbankandroid.R
+import io.github.samsalmag.foodbankandroid.util.SharedPreferencesUtil
 import io.github.samsalmag.foodbankandroid.model.GroceryProduct
 import java.util.logging.Logger
 
-class GroceryProductAdapter(private val groceryProducts: MutableList<GroceryProduct>) : RecyclerView.Adapter<GroceryProductAdapter.GroceryItemViewHolder>() {
+class GroceryProductAdapter(
+    private val groceryProducts: MutableList<GroceryProduct>,
+    private var checkboxClickListener: CheckboxClickListener? = null
+) : RecyclerView.Adapter<GroceryProductAdapter.GroceryItemViewHolder>() {
 
     class GroceryItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val ingredientName: TextView = itemView.findViewById(R.id.textView_ingredientName)
@@ -19,6 +23,10 @@ class GroceryProductAdapter(private val groceryProducts: MutableList<GroceryProd
         val ingredientUnit: TextView = itemView.findViewById(R.id.textView_ingredientUnit)
         val groceryComplete: CheckBox = itemView.findViewById(R.id.checkBox_ingredientComplete)
         val completeOverlay: View = itemView.findViewById(R.id.view_completeOverlay)
+    }
+
+    interface CheckboxClickListener {
+        fun onCheckboxClick(position: Int, isChecked: Boolean)
     }
 
     private val LOGGER = Logger.getLogger(GroceryProductAdapter::class.java.name)
@@ -51,6 +59,7 @@ class GroceryProductAdapter(private val groceryProducts: MutableList<GroceryProd
             SharedPreferencesUtil.saveGroceryList(holder.itemView.context, groceryProducts)  // Save the updated list
 
             holder.completeOverlay.visibility = if (isChecked) View.VISIBLE else View.GONE  // Update overlay visibility
+            checkboxClickListener?.onCheckboxClick(position, isChecked) // If a listener is set, notify it
         }
     }
 
