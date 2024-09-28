@@ -82,7 +82,11 @@ class GroceryListFragment : Fragment(), GroceryProductAdapter.CheckboxClickListe
             binding.textViewRemainingGroceryProducts.text = "All grocery products done! \uD83D\uDE03"
             binding.textViewRemainingGroceryProducts.setTextColor(ContextCompat.getColor(requireContext(), R.color.grocery_list_complete))
         } else {
-            binding.textViewRemainingGroceryProducts.text = "$remainingGroceryProducts grocery product(s) left! \uD83D\uDE2C"
+            var productText = "product"
+            if (remainingGroceryProducts > 1)
+                productText = "products"
+
+            binding.textViewRemainingGroceryProducts.text = "$remainingGroceryProducts grocery $productText left! \uD83D\uDE2C"
             binding.textViewRemainingGroceryProducts.setTextColor(ContextCompat.getColor(requireContext(), R.color.grocery_list_incomplete))
         }
     }
