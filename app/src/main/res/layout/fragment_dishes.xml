@@ -5,25 +5,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_newDishView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:text="@string/add_new_dish"/>
+    <!-- Header -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:id="@+id/layout_header">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView_numberOfDishes"
+            android:text="100 dishes"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="17sp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:textColor="@color/black"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_newDishView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:layout_centerVertical="true"
+            android:text="@string/add_new_dish"/>
+    </RelativeLayout>
+
+    <!-- Dishes content -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/button_newDishView">
+        android:layout_below="@id/layout_header">
 
+        <!-- List of dishes -->
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/recyclerView_dishesList" />
 
+        <!-- Loading indicator -->
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -32,6 +54,7 @@
             android:visibility="gone"
             android:layout_gravity="center" />
 
+        <!-- Error message -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
