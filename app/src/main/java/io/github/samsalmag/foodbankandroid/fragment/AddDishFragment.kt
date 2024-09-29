@@ -21,7 +21,7 @@ import io.github.samsalmag.foodbankandroid.model.IngredientUnit
 import io.github.samsalmag.foodbankandroid.retrofit.DishRequestDTO
 import io.github.samsalmag.foodbankandroid.retrofit.FoodbankApi
 import io.github.samsalmag.foodbankandroid.retrofit.RetrofitService
-import io.github.samsalmag.foodbankandroid.retrofit.RetrofitUtil
+import io.github.samsalmag.foodbankandroid.util.RetrofitUtil
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

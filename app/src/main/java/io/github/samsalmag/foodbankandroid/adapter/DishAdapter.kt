@@ -58,17 +58,14 @@ class DishAdapter(private val dishes: MutableList<Dish>) : RecyclerView.Adapter<
     }
 
     private fun addDishIngredientsToGroceryList(dish: Dish, holder: DishViewHolder) {
-        val ingredientsList = dish.ingredients
-        LOGGER.info("Added ingredients: [$ingredientsList] to grocery list!")
-
         // Get the current grocery list
         val groceryProducts = mutableListOf<GroceryProduct>()
         groceryProducts.addAll(SharedPreferencesUtil.getGroceryList(holder.itemView.context))
 
-        for (ingredient in ingredientsList) {
+        for (ingredient in dish.ingredients) {
             var ingredientStacked = false
 
-            // Check if ingredient is already in grocery list, and if so, stack them
+            // Check if ingredient is already in grocery list, and if so, try to stack them
             for (product in groceryProducts) {
                 if (product.ingredient.canStack(ingredient)) {
                     product.ingredient.quantity += ingredient.quantity  // Stack the ingredients
@@ -86,5 +83,6 @@ class DishAdapter(private val dishes: MutableList<Dish>) : RecyclerView.Adapter<
         }
         SharedPreferencesUtil.saveGroceryList(holder.itemView.context, groceryProducts)
         Toast.makeText(holder.itemView.context, "Ingredients added to grocery list!", Toast.LENGTH_LONG).show()
+        LOGGER.info("Added ingredients: [${dish.ingredients}] to grocery list!")
     }
 }
