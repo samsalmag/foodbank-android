@@ -1,4 +1,4 @@
-package io.github.samsalmag.foodbankandroid.retrofit
+package io.github.samsalmag.foodbankandroid.util
 
 import okhttp3.RequestBody
 import okio.Buffer
