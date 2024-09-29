@@ -1,4 +1,4 @@
-package io.samsalmag.foodbankandroid
+package io.github.samsalmag.foodbankandroid
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

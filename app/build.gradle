@@ -54,4 +54,5 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0")     // Support for Java 8 date/time types
     implementation 'com.google.code.gson:gson:2.11.0'
+    androidTestImplementation "androidx.fragment:fragment-testing:1.6.0"
 }
