@@ -12,9 +12,6 @@
         android:theme="@style/Theme.FoodbankAndroid"
         android:usesCleartextTraffic="true">
         <activity
-            android:name="io.github.samsalmag.foodbankandroid.fragment.AddDishFragment"
-            android:exported="false" />
-        <activity
             android:name="io.github.samsalmag.foodbankandroid.MainActivity"
             android:exported="true">
             <intent-filter>
