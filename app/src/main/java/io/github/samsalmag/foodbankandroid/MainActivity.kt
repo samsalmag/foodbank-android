@@ -9,6 +9,7 @@ import com.samsalmag.foodbankandroid.R
 import com.samsalmag.foodbankandroid.databinding.ActivityMainBinding
 import io.github.samsalmag.foodbankandroid.fragment.DishesFragment
 import io.github.samsalmag.foodbankandroid.fragment.GroceryListFragment
+import io.github.samsalmag.foodbankandroid.fragment.RandomDishFragment
 import java.util.logging.Logger
 
 class MainActivity : AppCompatActivity() {
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity() {
             val selectedFragment = when (item.itemId) {
                 R.id.bottomNav_dishes -> DishesFragment()
                 R.id.bottomNav_groceryList -> GroceryListFragment()
+                R.id.bottomNav_randomDish -> RandomDishFragment()
                 else -> null
             }
 
