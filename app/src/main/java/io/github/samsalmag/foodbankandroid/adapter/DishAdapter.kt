@@ -83,7 +83,7 @@ class DishAdapter(private val dishes: MutableList<Dish>) : RecyclerView.Adapter<
             }
         }
         SharedPreferencesUtil.saveGroceryList(holder.itemView.context, groceryProducts)
-        Toast.makeText(holder.itemView.context, "Ingredients added to grocery list!", Toast.LENGTH_LONG).show()
+        Toast.makeText(holder.itemView.context, "Ingredients added to grocery list!", Toast.LENGTH_SHORT).show()
         LOGGER.info("Added ingredients: [${dish.ingredients}] to grocery list!")
     }
 }
