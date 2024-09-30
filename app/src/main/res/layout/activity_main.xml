@@ -61,5 +61,6 @@
         android:background="@color/purple_500"
         app:itemTextColor="@color/white"
         app:itemIconTint="@color/white"
-        app:itemIconSize="35dp"/>
+        app:itemIconSize="35dp"
+        app:labelVisibilityMode="labeled"/>
 </RelativeLayout>
