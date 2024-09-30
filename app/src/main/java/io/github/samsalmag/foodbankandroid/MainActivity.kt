@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    private fun updateApiConnectionText(connection_status: ApiConnectivityStatus) {
-        binding.apiConnectionText.text = connection_status.statusText
+    private fun updateApiConnectionText(connectionStatus: ApiConnectivityStatus) {
+        binding.apiConnectionText.text = connectionStatus.toString()
     }
 }
