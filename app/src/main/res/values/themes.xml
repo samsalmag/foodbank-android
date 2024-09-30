@@ -11,6 +11,7 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <!-- Keyboard appear in front of other elements (such as BottomNavigationView) -->
+        <item name="android:windowSoftInputMode">adjustPan</item>
     </style>
 </resources>
