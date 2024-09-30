@@ -33,6 +33,7 @@ class DishAdapter(private val dishes: MutableList<Dish>) : RecyclerView.Adapter<
         val dish = dishes[position]
         holder.textViewDishName.text = dish.name
         holder.textViewDishCategories.text = dish.categories
+            .sorted()
             .toString().substring(1, dish.categories.toString().length - 1)   // Remove list brackets
 
         // Alternate background color
